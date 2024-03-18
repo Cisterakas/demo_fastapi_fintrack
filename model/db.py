@@ -5,7 +5,7 @@ db_config = {
     "host": "localhost",
     "user": "root",
     "password": "",
-    "database": "web2_grp0",
+    "database": "reqease",
     "port": 3306,
 }
 
@@ -17,3 +17,4 @@ def get_db():
     finally:
         cursor.close()
         db.close()
+        
