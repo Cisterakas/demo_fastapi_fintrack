@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException, APIRouter, Form
-from .db import get_db
 import bcrypt
+from .db import get_db
 
 
 UserRouter = APIRouter(tags=["Users"])
@@ -11,9 +11,9 @@ UserRouter = APIRouter(tags=["Users"])
 async def read_users(
     db=Depends(get_db)
 ):
-    query = "SELECT user_id, first_name, middle_name, last_name, suffix, email FROM user"
+    query = "SELECT user_id, first_name, middle_name, last_name, suffix, email, password FROM user"
     db[0].execute(query)
-    users = [{"user_id": user[0], "first_name": user[1], "middle_name": user[2], "last_name": user[3], "suffix": user[4], "email": user[5]} for user in db[0].fetchall()]
+    users = [{"user_id": user[0], "first_name": user[1], "middle_name": user[2], "last_name": user[3], "suffix": user[4], "email": user[5], "password":user[6]} for user in db[0].fetchall()]
     return users
 
 @UserRouter.get("/users/{user_id}", response_model=dict)
@@ -99,7 +99,7 @@ async def delete_user(
         return {"message": "User deleted successfully"}
     except Exception as e:
         # Handle other exceptions if necessary
-        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Internal Server Error: {str(e)}") from e
     finally:
         # Close the database cursor
         db[0].close()

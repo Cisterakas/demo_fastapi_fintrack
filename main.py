@@ -13,9 +13,31 @@ from model.claiming_information import ClaimingInformationRouter
 from model.courier_information import CourierInformationRouter
 from model.user_transaction_history import UserTransactionHistoryRouter
 from model.user_feedback import UserFeedbackRouter
- 
+from model.new_accounts import NewAccountsRouter
+from model.add_student_user import AddStudentUserRouter
+from model.add_admin_user import AddAdminUserRouter
+from model.payment import PaymentsRouter
+from fastapi.middleware.cors import CORSMiddleware
+
+
+
+
 app = FastAPI()
- # Include CRUD routes from modules
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
+)
+
+# Include CRUD routes from modules
+app.include_router(PaymentsRouter, prefix="/api")
+app.include_router(NewAccountsRouter, prefix="/api")
+app.include_router(AddStudentUserRouter, prefix="/api")
+app.include_router(AddAdminUserRouter, prefix="/api")
+
 app.include_router(UserRouter, prefix="/api")
 app.include_router(StudentRouter, prefix="/api")
 app.include_router(AdministratorRouter, prefix="/api")
