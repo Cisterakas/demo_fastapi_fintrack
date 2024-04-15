@@ -2,10 +2,10 @@
 import mysql.connector
 
 db_config = {
-    "host": "localhost",
-    "user": "root",
-    "password": "",
-    "database": "reqease",
+    "host": "152.42.234.69",
+    "user": "reqease",
+    "password": "reqease2024uic",
+    "database": "reqEase",
     "port": 3306,
 }
 

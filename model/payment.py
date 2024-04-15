@@ -12,9 +12,9 @@ async def read_payments(db=Depends(get_db)):
             CONCAT(u.first_name, ' ', IFNULL(u.middle_name, ''), ' ', u.last_name) AS full_name,
             GROUP_CONCAT(dt.name SEPARATOR ', ') AS document_names,
             ut.total_amount_paid AS total_fee,
-            dtu.receipt_link,
-            dt_alias.payment_date AS payment_date,
-            ci.claiming_date,
+            MAX(dtu.receipt_link) AS receipt_link,
+            MAX(dt_alias.payment_date) AS payment_date,
+            MAX(ci.claiming_date) AS claiming_date,
             dr.status
         FROM
             document_request dr
@@ -36,7 +36,7 @@ async def read_payments(db=Depends(get_db)):
         LEFT JOIN document_transaction dt_alias ON dr.request_id = dt_alias.request_id
         LEFT JOIN claiming_information ci ON dr.request_id = ci.request_id
         GROUP BY
-            dr.request_id;
+            dr.request_id, s.student_school_id, u.first_name, u.middle_name, u.last_name, dr.status;
     """
     db[0].execute(query)
     payments = [{
