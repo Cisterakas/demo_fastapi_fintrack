@@ -30,7 +30,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 
-app = FastAPI()
+
 
 app.add_middleware(
     CORSMiddleware,
